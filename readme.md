@@ -1,1 +1,0 @@
-kubectl apply -f s3mock.yaml
