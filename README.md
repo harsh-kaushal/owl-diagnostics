@@ -7,10 +7,14 @@
 * **Zero-Cost Simulation:** Integrated with **S3Mock** and **LocalStack** for air-gapped testing.
 
 ### 🛠️ Quick Start
-1. **Setup Mocks:** `kubectl apply -f utilities/s3mock.yaml`
-2. **Configure Secrets:** (Refer to `/deploy` docs)
-3. **Launch Agent:** `kubectl apply -f deploy/`
-4. **Trigger a Crash:** `kubectl apply -f utilities/buggy-app.yaml`
+Deploy the entire stack (Mocks, Secrets, and Agent) with a single command:
+
+1. **Build the Agent:** `make build`
+2. **Deploy the Stack:** `make setup KEY='your_openrouter_api_key'`
+3. **Trigger a Crash:** `make test`
+
+Watch the agent's logic in real-time:
+`kubectl logs -f deployment/owl-diagnostics-agent`
 
 ### 🛡️ Security
 * **RBAC:** Operates under a least-privilege ServiceAccount.

@@ -12,7 +12,7 @@ def get_ai_fix(pod_name, logs):
     """Universal LLM Client for OpenRouter/OpenAI API"""
     headers = {
         "Authorization": f"Bearer {LLM_API_KEY}",
-        "HTTP-Referer": "https://github.com/your-username/k8s-owl-diagnostics",
+        "HTTP-Referer": "https://github.com/harsh-kaushal/owl-diagnostics",
         "Content-Type": "application/json"
     }
     

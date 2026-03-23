@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir kubernetes requests
 # Copy the agent code
 COPY agent.py .
 
-# Run as non-root user for security (Resume Tip: Highlighting security)
+# Run as non-root user for security 
 RUN useradd -m agentuser
 USER agentuser
 
