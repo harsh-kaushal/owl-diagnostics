@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s3mock
+  labels:
+    app: s3mock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s3mock
+  template:
+    metadata:
+      labels:
+        app: s3mock
+    spec:
+      containers:
+      - name: s3mock
+        image: adobe/s3mock:latest
+        ports:
+        - containerPort: 9090
+          name: http
+        - containerPort: 9191
+          name: https
+        env:
+        # Optional: Pre-create buckets on startup
+        - name: initialBuckets
+          value: "test-bucket,my-data"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: s3mock
+spec:
+  selector:
+    app: s3mock
+  ports:
+    - protocol: TCP
+      port: 9090      # Port reachable inside the cluster
+      targetPort: 9090 # Port on the container
+  type: ClusterIP

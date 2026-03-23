@@ -1,0 +1,20 @@
+FROM python:3.11-slim
+
+# Prevents Python from writing pyc files to disc and buffering stdout/stderr
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+# Install dependencies
+# We only need kubernetes and requests for the core logic
+RUN pip install --no-cache-dir kubernetes requests
+
+# Copy the agent code
+COPY agent.py .
+
+# Run as non-root user for security (Resume Tip: Highlighting security)
+RUN useradd -m agentuser
+USER agentuser
+
+CMD ["python", "agent.py"]
