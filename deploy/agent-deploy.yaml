@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owl-diagnostics-agent
+  labels:
+    app: owl-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: owl-agent
+  template:
+    metadata:
+      labels:
+        app: owl-agent
+    spec:
+      serviceAccountName: owl-diagnostics-sa
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: watcher
+        image: owl-diagnostics-agent:latest
+        imagePullPolicy: Never 
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+        env:
+        - name: LLM_ENDPOINT
+          value: "https://openrouter.ai/api/v1"
+        - name: LLM_MODEL
+          value: "meta-llama/llama-3-8b-instruct"
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: owl-secrets
+              key: OPENROUTER_API_KEY
+        - name: S3_ENDPOINT
+          value: "http://s3mock:9090"
